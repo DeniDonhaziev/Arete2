@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import styles from "../../scss/components/admin/adminSection.module.scss";
+import styles from "../../scss/components/Admin/adminSection.module.scss";
 import { useTheme } from "../../store/useTheme";
 import { useApi } from "../../hooks/useApi";
 import {

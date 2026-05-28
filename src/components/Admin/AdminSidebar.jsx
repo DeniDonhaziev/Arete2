@@ -1,4 +1,4 @@
-import styles from "../../scss/components/admin/adminSidebar.module.scss";
+import styles from "../../scss/components/Admin/adminSidebar.module.scss";
 
 const AdminSidebar = ({ activeTab, setActiveTab }) => {
   return (

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import AdminArticleCard from "./AdminArticleCard";
 import styles from "../../scss/components/adminPanel.module.scss";
-import formStyles from "../../scss/components/admin/adminSection.module.scss";
+import formStyles from "../../scss/components/Admin/adminSection.module.scss";
 import { useTheme } from "../../store/useTheme";
 import { useApi } from "../../hooks/useApi";
 import { useAuthStore } from "../../store/authStore";

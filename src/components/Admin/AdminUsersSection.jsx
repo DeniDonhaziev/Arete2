@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useApi } from "../../hooks/useApi";
 import { useTheme } from "../../store/useTheme";
-import styles from "../../scss/components/admin/adminSection.module.scss";
+import styles from "../../scss/components/Admin/adminSection.module.scss";
 import { ROLE_OPTIONS } from "../../constants/roles";
 import { getRoleLabel, sortRolesByPriority } from "../../utils/roles";
 import { syncAllLocalUsersToServer } from "../../services/syncUserToServer";

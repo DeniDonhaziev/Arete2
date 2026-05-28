@@ -5,7 +5,7 @@ import AdminEventsSection from "../components/Admin/AdminEventsSection";
 import AdminUsersSection from "../components/Admin/AdminUsersSection";
 import { useAuthStore } from "../store/authStore";
 import { useTheme } from "../store/useTheme";
-import styles from "../scss/components/admin/adminPanel.module.scss";
+import styles from "../scss/components/Admin/adminPanel.module.scss";
 
 const TABS = [
   {
