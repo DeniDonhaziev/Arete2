@@ -15,9 +15,13 @@ if (fs.existsSync(DIST_DIR)) {
   app.get(/^(?!\/api).*/, (_req, res) => {
     res.sendFile(path.join(DIST_DIR, "index.html"));
   });
+} else {
+  console.warn("Папка dist/ не найдена — выполните npm run build");
+  app.get("/", (_req, res) => {
+    res.status(503).send("Сайт собирается. Запустите npm run build.");
+  });
 }
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Сайт и API: http://localhost:${PORT}`);
-  console.log(`Мероприятия: http://localhost:${PORT}/api/events`);
+  console.log(`Books Club запущен на порту ${PORT}`);
 });
