@@ -1,0 +1,219 @@
+.page {
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+.pageLight {
+  color: #000000;
+}
+
+.container {
+  width: min(960px, calc(100vw - 30px));
+  margin: 0 auto;
+  padding: 24px 0 36px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  padding: 7px 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  opacity: 0.9;
+  align-self: flex-start;
+}
+
+.backButton img {
+  width: 16px;
+  height: 16px;
+}
+
+.backButtonLight {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 22px;
+  background-color: #000000;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.cardLight {
+  border-color: rgba(0, 0, 0, 0.35);
+  background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+}
+
+.title {
+  margin: 0 0 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 600;
+}
+
+.meta,
+.description,
+.manager,
+.participantsTitle,
+.participantName,
+.participantEmail,
+.roleBadge,
+.participantEmpty,
+.info,
+.error {
+  font-family: "Montserrat", sans-serif;
+}
+
+.meta {
+  margin: 0 0 14px;
+  opacity: 0.85;
+}
+
+.description {
+  margin: 0 0 16px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.manager {
+  margin: 0 0 14px;
+  opacity: 0.9;
+}
+
+.actionButton {
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  padding: 9px 14px;
+  margin: 14px 0 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pageLight .actionButton {
+  border-color: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.08);
+  color: #000000;
+}
+
+.cancelButton {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.pageLight .cancelButton {
+  border-color: #d93a3a;
+  color: #d93a3a;
+  background: rgba(217, 58, 58, 0.08);
+}
+
+.actionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.participantsTitle {
+  margin: 24px 0 10px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.participantsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.participantItem {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cardLight .participantItem {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.participantName {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.participantEmail {
+  font-size: 13px;
+  opacity: 0.78;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.rolesRow {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.participantEmpty {
+  opacity: 0.8;
+}
+
+.info {
+  text-align: center;
+}
+
+.error {
+  text-align: center;
+  color: #ff7a7a;
+}
+
+@media (max-width: 520px) {
+  .container {
+    width: calc(100vw - 24px);
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .participantsTitle {
+    margin-top: 18px;
+    font-size: 18px;
+  }
+}

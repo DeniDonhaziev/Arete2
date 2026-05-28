@@ -1,0 +1,14 @@
+# Деплой: https://render.com → New → Blueprint → выберите репозиторий
+services:
+  - type: web
+    name: books-club
+    runtime: node
+    plan: free
+    buildCommand: npm install && export VITE_EVENTS_ADMIN_KEY="${EVENTS_ADMIN_KEY:-arete-events-admin-dev}" && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: EVENTS_ADMIN_KEY
+        generateValue: true

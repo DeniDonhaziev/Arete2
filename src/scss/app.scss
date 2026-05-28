@@ -1,0 +1,239 @@
+/* ─── Design tokens: dark theme ─── */
+.app {
+  --bg-base: #07080c;
+  --bg-elevated: #11141b;
+  --bg-surface: #161a24;
+  --bg-glass: rgba(255, 255, 255, 0.045);
+  --bg-glass-strong: rgba(255, 255, 255, 0.09);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-accent: rgba(201, 169, 98, 0.45);
+  --text-primary: #f8f9fc;
+  --text-secondary: rgba(248, 249, 252, 0.68);
+  --text-muted: rgba(248, 249, 252, 0.42);
+  --accent: #d4b56a;
+  --accent-bright: #e8cc85;
+  --accent-soft: rgba(212, 181, 106, 0.14);
+  --accent-glow: rgba(212, 181, 106, 0.32);
+  --violet-glow: rgba(130, 140, 220, 0.15);
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 60px rgba(212, 181, 106, 0.14);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-xl: 36px;
+  --radius-pill: 999px;
+  --font-sans: "Montserrat", system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition: 0.28s var(--ease-out);
+  --header-blur: 20px;
+  --content-max: 1040px;
+  --section-gap: clamp(56px, 9vw, 96px);
+
+  position: relative;
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text-primary);
+  background-color: var(--bg-base);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+
+  &::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% -15%, rgba(212, 181, 106, 0.11), transparent 58%),
+      radial-gradient(ellipse 45% 35% at 92% 8%, var(--violet-glow), transparent 50%),
+      radial-gradient(ellipse 40% 30% at 4% 35%, rgba(90, 120, 180, 0.08), transparent 45%),
+      radial-gradient(ellipse 55% 40% at 50% 105%, rgba(100, 80, 140, 0.07), transparent 50%);
+  }
+
+  &::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 78% 12%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1.5px 1.5px at 45% 8%, rgba(212, 181, 106, 0.6), transparent),
+      radial-gradient(1px 1px at 88% 42%, rgba(255, 255, 255, 0.35), transparent),
+      radial-gradient(1px 1px at 22% 62%, rgba(255, 255, 255, 0.3), transparent),
+      radial-gradient(1px 1px at 65% 78%, rgba(212, 181, 106, 0.45), transparent),
+      radial-gradient(1px 1px at 8% 88%, rgba(255, 255, 255, 0.25), transparent);
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.appColor {
+  --bg-base: #f3f4f8;
+  --bg-elevated: #ffffff;
+  --bg-surface: #fafbfe;
+  --bg-glass: rgba(255, 255, 255, 0.65);
+  --bg-glass-strong: rgba(255, 255, 255, 0.9);
+  --border-subtle: rgba(15, 18, 24, 0.07);
+  --border-strong: rgba(15, 18, 24, 0.14);
+  --border-accent: rgba(154, 123, 60, 0.4);
+  --text-primary: #0c0e14;
+  --text-secondary: rgba(12, 14, 20, 0.68);
+  --text-muted: rgba(12, 14, 20, 0.42);
+  --accent: #8f7030;
+  --accent-bright: #a68542;
+  --accent-soft: rgba(143, 112, 48, 0.12);
+  --accent-glow: rgba(143, 112, 48, 0.22);
+  --violet-glow: rgba(120, 130, 200, 0.1);
+  --shadow-sm: 0 2px 16px rgba(12, 14, 20, 0.06);
+  --shadow-md: 0 20px 50px rgba(12, 14, 20, 0.1);
+  --shadow-lg: 0 28px 70px rgba(12, 14, 20, 0.12);
+  --shadow-glow: 0 0 50px rgba(143, 112, 48, 0.12);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  color: var(--text-primary);
+
+  &::before {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212, 181, 106, 0.18), transparent 55%),
+      radial-gradient(ellipse 40% 30% at 95% 20%, var(--violet-glow), transparent 50%);
+  }
+
+  &::after {
+    opacity: 0.2;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-pill);
+
+  &:hover {
+    background: var(--accent);
+  }
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text-primary);
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Shared UI primitives (global) */
+.pageTitle {
+  margin: clamp(40px, 6vw, 64px) 0 clamp(32px, 5vw, 48px);
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 7vw, 3.75rem);
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  color: var(--text-primary);
+  animation: fadeUp 0.7s var(--ease-out) both;
+}
+
+.sectionLabel {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.glassPanel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md), var(--shadow-inset);
+}

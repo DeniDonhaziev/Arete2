@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "firstName": "Админ",
+    "lastName": "Arete",
+    "email": "admin@arete.local",
+    "passwordHash": "3c8872c094682f4c3fcdffdab80a8d351dbeee9b31a29e6ea092b51cf473e732",
+    "roles": [
+      {
+        "id": 4,
+        "name": "RED"
+      }
+    ],
+    "createdAt": "2026-05-28T17:09:46.105Z"
+  },
+  {
+    "id": 12,
+    "firstName": "Дени",
+    "lastName": "Донхажиев",
+    "email": "denidonhaziev@mail.ru",
+    "passwordHash": "2e0bbf64e20aa48774a0340d901fca28bbe9830b00651074b1c35a60516b125c",
+    "roles": [
+      {
+        "id": 1,
+        "name": "GREEN"
+      },
+      {
+        "id": 4,
+        "name": "RED"
+      }
+    ],
+    "createdAt": "2026-05-28T20:02:40.491Z"
+  }
+]

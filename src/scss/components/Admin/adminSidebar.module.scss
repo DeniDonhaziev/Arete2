@@ -1,0 +1,69 @@
+.header {
+  margin-bottom: 24px;
+
+  ul {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+
+    li {
+      cursor: pointer;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 2px solid #ffffff;
+      font-size: 14px;
+      transition: all 0.15s ease;
+    }
+
+    li:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .active {
+      background-color: #ffffff;
+      color: #111111;
+    }
+  }
+}
+
+/* светлая тема */
+.headerColor {
+  ul li {
+    border-color: rgba(0, 0, 0, 0.35);
+    color: #000;
+  }
+
+  ul li:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+
+  ul .active {
+    background-color: #000;
+    color: #fff;
+  }
+}
+
+
+/* ===== LIGHT THEME: CREATE FORM ===== */
+.cardLight.createForm {
+  border-color: rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.cardLight .input,
+.cardLight .textarea {
+  border-color: rgba(0, 0, 0, 0.35);
+  color: #000;
+}
+
+.cardLight .input::placeholder,
+.cardLight .textarea::placeholder {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.cardLight .input:focus,
+.cardLight .textarea:focus {
+  border-color: #000;
+  background: rgba(0, 0, 0, 0.05);
+}

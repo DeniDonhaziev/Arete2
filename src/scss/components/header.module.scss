@@ -1,0 +1,209 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px clamp(16px, 4vw, 28px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--bg-base) 78%, transparent);
+  backdrop-filter: blur(var(--header-blur)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--header-blur)) saturate(1.2);
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  transition: background var(--transition), box-shadow var(--transition);
+
+  .headerIcon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: transform var(--transition), opacity var(--transition);
+
+    &:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+
+    img {
+      height: 34px;
+      width: auto;
+    }
+  }
+
+  .burgerMenu {
+    margin-left: auto;
+    display: block;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    height: 42px;
+    width: 42px;
+    padding: 8px;
+    object-fit: contain;
+    transition: background var(--transition), border-color var(--transition);
+
+    &:hover {
+      background: var(--accent-soft);
+      border-color: var(--border-accent);
+    }
+
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+
+  .desktopMenuColor a {
+    color: var(--text-primary) !important;
+
+    &:hover {
+      background: var(--accent-soft) !important;
+      color: var(--accent) !important;
+    }
+
+    &.active {
+      background: var(--accent-soft) !important;
+      color: var(--accent-bright) !important;
+      border-color: var(--border-accent) !important;
+    }
+  }
+
+  .desktopMenu {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+
+      a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        padding: 9px 16px;
+        border-radius: var(--radius-pill);
+        border: 1px solid transparent;
+        transition: color var(--transition), background var(--transition), border-color var(--transition);
+
+        &:hover {
+          color: var(--text-primary);
+          background: var(--bg-glass-strong);
+        }
+
+        &.active {
+          color: var(--accent-bright);
+          background: var(--accent-soft);
+          border-color: var(--border-accent);
+        }
+      }
+    }
+  }
+
+  .loginButtonColor {
+    border-color: var(--border-strong) !important;
+    color: var(--text-primary) !important;
+  }
+
+  .loginButton {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(
+        145deg,
+        rgba(212, 181, 106, 0.2),
+        rgba(212, 181, 106, 0.05)
+      );
+      border: 1px solid var(--border-accent);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: var(--shadow-glow);
+      transition: transform var(--transition), box-shadow var(--transition);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-glow), var(--shadow-sm);
+      }
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoutLink {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--transition);
+
+  &:hover {
+    color: #e85d5d;
+  }
+}
+
+.userName {
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  background: var(--bg-glass);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+}
+
+.actions .divChick {
+  background: var(--text-primary);
+  border-radius: 50%;
+  height: 34px;
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+
+  &:hover {
+    transform: scale(1.08) rotate(-8deg);
+    box-shadow: var(--shadow-glow);
+  }
+
+  img {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+.actions .divcolor {
+  background: var(--bg-elevated) !important;
+}
+
+@media (max-width: 767px) {
+  .actions {
+    display: none;
+  }
+}

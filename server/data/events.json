@@ -1,0 +1,13 @@
+[
+  {
+    "id": 2,
+    "title": "speckup",
+    "description": "Ораторское искусство",
+    "plannedAt": "2026-12-05T09:00:00.000Z",
+    "participants": [
+      {
+        "id": "11"
+      }
+    ]
+  }
+]

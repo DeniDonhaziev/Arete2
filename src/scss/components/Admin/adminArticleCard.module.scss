@@ -1,0 +1,450 @@
+.card {
+  background-color: #111111;
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  color: #ffffff;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  row-gap: 8px;
+  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.metaLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.type {
+  font-style: italic;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.author {
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.dot {
+  opacity: 0.6;
+}
+
+/* статус */
+
+.status {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.statusPending {
+  background-color: rgba(255, 204, 0, 0.08);
+  border-color: rgba(255, 204, 0, 0.7);
+  color: #ffcc00;
+}
+
+.statusApproved {
+  background-color: rgba(46, 204, 113, 0.08);
+  border-color: rgba(46, 204, 113, 0.7);
+  color: #2ecc71;
+}
+
+.statusRejected {
+  background-color: rgba(231, 76, 60, 0.08);
+  border-color: rgba(231, 76, 60, 0.7);
+  color: #e74c3c;
+}
+
+/* BODY */
+
+.body {
+  margin-top: 4px;
+  padding: 4px 0 2px;
+  cursor: pointer;
+}
+
+.body:hover .title {
+  text-decoration: underline;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.excerpt {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.86);
+  max-height: 3.9em; /* 2–3 строки */
+  overflow: hidden;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.actionBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.btnAccept,
+.btnReject,
+.btnEdit,
+.btnDelete {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: filter 0.15s;
+}
+
+.btnAccept {
+  background: #2ecc71;
+  color: #111;
+}
+
+.btnAccept:hover {
+  filter: brightness(1.08);
+}
+
+.btnReject {
+  background: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+
+.btnReject:hover {
+  background: rgba(231, 76, 60, 0.15);
+}
+
+.btnEdit {
+  background: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.btnEdit:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.btnDelete {
+  background: #c94a4a;
+  color: #fff;
+}
+
+.btnDelete:hover {
+  filter: brightness(1.1);
+}
+
+.date {
+  font-size: 12px;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* правая часть футера */
+
+.footerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* иконки редактирования / удаления — крупные кнопки */
+
+.iconActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.02);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, transform 0.1s ease;
+}
+
+.iconButton:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.iconDanger {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.iconDanger:hover {
+  background-color: rgba(231, 76, 60, 0.2);
+}
+
+/* блок быстрой модерации */
+
+.moderation {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 204, 0, 0.5);
+  background-color: rgba(255, 204, 0, 0.08);
+}
+
+.moderationTextApprove,
+.moderationTextReject {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.moderationTextApprove {
+  background: #2ecc71;
+  color: #111;
+  border-color: #2ecc71;
+}
+
+.moderationTextApprove:hover {
+  filter: brightness(1.08);
+}
+
+.moderationTextReject {
+  background: transparent;
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.moderationTextReject:hover {
+  background: rgba(231, 76, 60, 0.15);
+}
+
+.moderationBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, transform 0.1s ease;
+}
+
+/* approve / reject */
+
+.moderationApprove {
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+
+.moderationApprove:hover {
+  background-color: rgba(46, 204, 113, 0.18);
+  transform: translateY(-1px);
+}
+
+.moderationReject {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.moderationReject:hover {
+  background-color: rgba(231, 76, 60, 0.18);
+  transform: translateY(-1px);
+}
+
+/* адаптив */
+
+@media (max-width: 768px) {
+  .card {
+    padding: 12px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .footerRight {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+
+/* --- ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ КАРТОЧЕК ПОЛЬЗОВАТЕЛЯ --- */
+
+.userName {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.userId {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.userInfoLine {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.userInfoLabel {
+  opacity: 0.8;
+}
+
+.userHighlight {
+  font-weight: 500;
+}
+
+.userRoleBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid transparent;
+}
+
+/* цвета уровней */
+
+.roleGold {
+  border-color: #f1c40f;
+  color: #f1c40f;
+  background-color: rgba(241, 196, 15, 0.08);
+}
+
+.roleSilver {
+  border-color: #bdc3c7;
+  color: #bdc3c7;
+  background-color: rgba(189, 195, 199, 0.08);
+}
+
+.roleBronze {
+  border-color: #cd7f32;
+  color: #cd7f32;
+  background-color: rgba(205, 127, 50, 0.08);
+}
+
+.userFooterLeft {
+  display: flex;
+  align-items: center;
+}
+
+.userFooterLabel {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* Быстрая смена роли */
+
+.roleQuick {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.roleQuickLabel {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-right: 2px;
+}
+
+.rolePill {
+  min-width: 46px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: #ffffff;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, transform 0.1s ease;
+}
+
+.rolePill:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* активные роли */
+
+.rolePillActiveGold {
+  border-color: #f1c40f;
+  background-color: rgba(241, 196, 15, 0.18);
+  color: #f1c40f;
+}
+
+.rolePillActiveSilver {
+  border-color: #bdc3c7;
+  background-color: rgba(189, 195, 199, 0.18);
+  color: #bdc3c7;
+}
+
+.rolePillActiveBronze {
+  border-color: #cd7f32;
+  background-color: rgba(205, 127, 50, 0.18);
+  color: #cd7f32;
+}
+
+/* адаптив для футера с ролями */
+
+@media (max-width: 768px) {
+  .roleQuick {
+    margin-top: 4px;
+  }
+}

@@ -1,0 +1,86 @@
+import { useEffect, useLayoutEffect } from "react";
+import Newspaper from "./pages/Newspaper";
+import "./scss/app.scss";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Settings from "./pages/Settings";
+import GuestRoute from "./pages/GuestRoute";
+import MainRoute from "./pages/MainRoute";
+import LoginRoute from "./pages/LoginRoute";
+import RegistrationRoute from "./pages/RegistrationRoute";
+import SingUp from "./pages/SingUp";
+import Happenings from "./pages/Happenings";
+import EventDetails from "./pages/EventDetails";
+import Rating from "./pages/Rating";
+import AdminRoute from "./pages/AdminRoute";
+import AdminLoginRoute from "./pages/AdminLoginRoute";
+import { ensureAdminAccount } from "./services/ensureAdminAccount";
+import { useTheme } from "./store/useTheme";
+import NotFoundPage from "./pages/NotFoundPage";
+import {
+  restoreSessionFromStorage,
+  sanitizeAuthStorage,
+  useAuthStore,
+} from "./store/authStore";
+import { getTokenExpiryMs, isTokenExpired } from "./utils/jwt";
+
+function App() {
+  const { theme } = useTheme();
+  const token = useAuthStore((state) => state.token);
+  const logout = useAuthStore((state) => state.logout);
+
+  useLayoutEffect(() => {
+    restoreSessionFromStorage();
+    sanitizeAuthStorage();
+    void ensureAdminAccount();
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
+
+    // Mock-токены не проверяем — иначе сессия сбрасывается
+    if (token.includes("mock-signature")) return;
+
+    if (isTokenExpired(token)) {
+      logout();
+      return;
+    }
+
+    const expiryMs = getTokenExpiryMs(token);
+    if (!expiryMs) return;
+
+    const timeout = expiryMs - Date.now();
+    if (timeout <= 0) {
+      logout();
+      return;
+    }
+
+    const timerId = setTimeout(() => {
+      logout();
+    }, timeout);
+
+    return () => clearTimeout(timerId);
+  }, [token, logout]);
+
+  return (
+    <div className={theme === "black" ? "app" : "appColor"}>
+      <Routes>
+        <Route path="/" element={<GuestRoute />} />
+        <Route path="/main" element={<MainRoute />} />
+        <Route path="/home" element={<Navigate to="/main" replace />} />
+        <Route path="/newspaper" element={<Newspaper />} />
+        <Route path="/happenings" element={<Happenings />} />
+        <Route path="/happenings/:id" element={<EventDetails />} />
+        <Route path="/rating" element={<Rating />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/login" element={<LoginRoute />} />
+        <Route path="/registration" element={<RegistrationRoute />} />
+        <Route path="/singup" element={<SingUp />} />
+        <Route path="/admin/login" element={<AdminLoginRoute />} />
+        <Route path="/admin" element={<AdminRoute />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </div>
+  );
+}
+
+export default App;

@@ -1,0 +1,93 @@
+.form {
+  max-width: 720px;
+  margin: 32px auto;
+  padding: 24px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 12px 14px;
+
+  font-size: 16px;
+  font-family: inherit;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: inherit;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.button {
+  margin-top: 8px;
+  padding: 12px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #ff8a00, #ffb347);
+  color: #1a1a1a;
+
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+
+/* ===== LIGHT THEME (ADMIN FORMS) ===== */
+:global(.appColor) {
+  .form {
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    backdrop-filter: none;
+  }
+
+  .input,
+  .textarea {
+    background: #ffffff;
+    border: 2px solid #b5b5b5; // ← ЯВНАЯ ГРАНИЦА
+    color: #000000;
+
+    &::placeholder {
+      color: #6f6f6f;
+    }
+
+    &:focus {
+      border-color: #000000;
+      background: #ffffff;
+    }
+  }
+
+  .title {
+    color: #000000;
+  }
+
+  .error {
+    color: #d63031;
+  }
+}

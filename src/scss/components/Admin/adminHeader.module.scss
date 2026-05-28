@@ -1,0 +1,88 @@
+.header {
+  display: flex;
+  justify-content: center;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tab {
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  transition: all 0.15s ease;
+}
+
+.tabButton {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.tabLabel {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tabHint {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.active {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #111111;
+}
+
+.active .tabHint {
+  opacity: 0.65;
+}
+
+.headerLight .tab {
+  border-color: rgba(0, 0, 0, 0.35);
+  color: #000;
+}
+
+.headerLight .tab:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.headerLight .active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+@media (max-width: 600px) {
+  .tabButton {
+    padding: 6px 12px;
+  }
+
+  .tabLabel {
+    font-size: 13px;
+  }
+
+  .tabHint {
+    font-size: 10px;
+  }
+}

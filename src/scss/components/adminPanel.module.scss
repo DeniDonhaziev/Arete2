@@ -1,0 +1,210 @@
+.postsRoot {
+  width: 100%;
+}
+
+.adminBlogsColor {
+  .filterBtn {
+    border: 1px solid rgba(0, 0, 0, 0.35) !important;
+    color: #000000 !important;
+  }
+
+  .filterBtn:hover {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+  }
+
+  .filterBtnActive {
+    background-color: #0000008a !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+  }
+
+  .moderationBanner {
+    border-color: rgba(200, 150, 0, 0.8);
+    background: rgba(255, 240, 180, 0.5);
+    color: #111;
+  }
+
+  .moderationAlert {
+    color: #9a7200;
+  }
+}
+
+ .adminHeaderColor {
+    ul {
+      li {
+        border: 2px solid rgb(0, 0, 0) !important;
+      }
+
+      .active {
+        background-color: rgb(0, 0, 0) !important;
+        color: rgb(255, 255, 255) !important;
+      }
+    }
+  }
+
+.adminBlogs {
+  width: 100%;
+  max-width: 1100px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  a{
+    img{
+      width: 27px;
+      height: 24px;
+    }
+  }
+
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    list-style-type: none;
+
+    li {
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 10px;
+      border: 2px solid white;
+    }
+
+    .active {
+      background-color: white;
+      color: black;
+    }
+  }
+}
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.filterBtn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.filterBtn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.filterBtnActive {
+  background-color: #ffffff;
+  color: #111111;
+  border-color: #ffffff;
+}
+
+.filterInfo {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-left: auto;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  padding: 4px 8px;
+}
+
+.emptyState {
+  margin-top: 20px;
+  font-size: 14px;
+  opacity: 0.8;
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+}
+
+.moderationBanner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 20px;
+  padding: 1.25rem 1.5rem;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 204, 0, 0.55);
+  background: rgba(255, 204, 0, 0.1);
+}
+
+.moderationTitle {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+}
+
+.moderationSteps {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.moderationAlert {
+  margin: 0;
+  font-size: 1rem;
+  color: #ffcc00;
+}
+
+.moderationHint {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.moderationTestBtn {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 204, 0, 0.7);
+  background: rgba(255, 204, 0, 0.2);
+  color: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.moderationTestBtn:hover {
+  background: rgba(255, 204, 0, 0.35);
+}
+
+.createDetails {
+  width: 100%;
+  max-width: 1100px;
+  margin: 24px auto 0;
+}
+
+.createSummary {
+  cursor: pointer;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  padding: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .filterBar {
+    align-items: flex-start;
+  }
+
+  .filterInfo {
+    width: 100%;
+    margin-left: 0;
+  }
+}
