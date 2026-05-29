@@ -4,17 +4,18 @@ import styles from "../scss/components/header.module.scss";
 import BurgerMenu from "./BurgerMenu";
 import { useTheme } from "../store/useTheme";
 import { useAuthStore } from "../store/authStore";
+import { logoutSession } from "../services/authSession";
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
-  const { isAuthenticated, user, logout } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const openMenu = () => setMenuOpen(true);
   const closeMenu = () => setMenuOpen(false);
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logoutSession();
     navigate("/login");
   };
 

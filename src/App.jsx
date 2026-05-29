@@ -13,7 +13,10 @@ import EventDetails from "./pages/EventDetails";
 import Rating from "./pages/Rating";
 import AdminRoute from "./pages/AdminRoute";
 import AdminLoginRoute from "./pages/AdminLoginRoute";
+import { USE_FIREBASE_AUTH } from "./config/firebaseEnv";
 import { ensureAdminAccount } from "./services/ensureAdminAccount";
+import { startFirebaseAuthListener } from "./services/firebaseAuthService";
+import { logoutSession } from "./services/authSession";
 import { useTheme } from "./store/useTheme";
 import NotFoundPage from "./pages/NotFoundPage";
 import {
@@ -26,22 +29,25 @@ import { getTokenExpiryMs, isTokenExpired } from "./utils/jwt";
 function App() {
   const { theme } = useTheme();
   const token = useAuthStore((state) => state.token);
-  const logout = useAuthStore((state) => state.logout);
 
   useLayoutEffect(() => {
-    restoreSessionFromStorage();
+    if (USE_FIREBASE_AUTH) {
+      startFirebaseAuthListener();
+    } else {
+      restoreSessionFromStorage();
+      void ensureAdminAccount();
+    }
     sanitizeAuthStorage();
-    void ensureAdminAccount();
   }, []);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || USE_FIREBASE_AUTH) return;
 
     // Mock-токены не проверяем — иначе сессия сбрасывается
     if (token.includes("mock-signature")) return;
 
     if (isTokenExpired(token)) {
-      logout();
+      void logoutSession();
       return;
     }
 
@@ -50,16 +56,16 @@ function App() {
 
     const timeout = expiryMs - Date.now();
     if (timeout <= 0) {
-      logout();
+      void logoutSession();
       return;
     }
 
     const timerId = setTimeout(() => {
-      logout();
+      void logoutSession();
     }, timeout);
 
     return () => clearTimeout(timerId);
-  }, [token, logout]);
+  }, [token]);
 
   return (
     <div className={theme === "black" ? "app" : "appColor"}>

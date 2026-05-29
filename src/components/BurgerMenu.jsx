@@ -1,11 +1,12 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
+import { logoutSession } from "../services/authSession";
 import styles from "../scss/components/burgerMenu.module.scss";
 import { useTheme } from "../store/useTheme";
 
 const BurgerMenu = ({ closeMenu }) => {
   const { theme, toggleTheme } = useTheme();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 
   const getInitials = (firstName = "", lastName = "", username = "") => {
@@ -19,10 +20,10 @@ const BurgerMenu = ({ closeMenu }) => {
     return String(username).trim().charAt(0).toUpperCase() || "?";
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logoutSession();
     closeMenu();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (

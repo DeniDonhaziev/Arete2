@@ -5,8 +5,11 @@ import {
   isPostsEndpoint,
   isUsersEndpoint,
 } from "../config/eventsApi";
+import { USE_FIREBASE_AUTH } from "../config/firebaseEnv";
 import { useAuthStore } from "../store/authStore";
 import apiCall from "../API/apiClient";
+import { getFirebaseIdToken } from "../services/firebaseAuthService";
+import { logoutSession } from "../services/authSession";
 import { readPersistedSession } from "../utils/authStorage";
 import { isTokenExpired } from "../utils/jwt";
 import { isAdmin } from "../utils/roles";
@@ -36,7 +39,6 @@ const attachAuthorToPostBody = (body, user) => {
 
 export const useApi = () => {
   const token = useAuthStore((state) => state.token);
-  const logout = useAuthStore((state) => state.logout);
 
   const call = useCallback(
     async (endpoint, options = {}) => {
@@ -52,15 +54,20 @@ export const useApi = () => {
         headers["Content-Type"] = "application/json";
       }
 
-      const authToken = token || resolveAuthToken();
+      let authToken = token || resolveAuthToken();
 
-      if (authToken) {
+      if (USE_FIREBASE_AUTH) {
+        const freshToken = await getFirebaseIdToken();
+        if (freshToken) authToken = freshToken;
+      } else if (authToken) {
         const isMockToken = String(authToken).includes("mock-signature");
         if (!isMockToken && isTokenExpired(authToken)) {
-          logout();
+          await logoutSession();
           throw new Error("Сессия истекла. Войдите снова.");
         }
+      }
 
+      if (authToken) {
         headers.Authorization = `Bearer ${authToken}`;
       }
 
@@ -91,12 +98,12 @@ export const useApi = () => {
         });
       } catch (error) {
         if (error.status === 401 || error.message.includes("Сессия истекла")) {
-          logout();
+          await logoutSession();
         }
         throw error;
       }
     },
-    [token, logout]
+    [token]
   );
 
   return { apiCall: call };

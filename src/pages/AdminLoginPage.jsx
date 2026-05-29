@@ -4,6 +4,7 @@ import { useTheme } from "../store/useTheme";
 import { completeAuth } from "../store/authStore";
 import { loginAdmin } from "../services/authService";
 import { ADMIN_EMAIL } from "../config/adminAccount";
+import { USE_FIREBASE_AUTH } from "../config/firebaseEnv";
 import { validateLoginForm } from "../utils/validation";
 import styles from "../scss/pages/adminLoginPage.module.scss";
 
@@ -115,7 +116,16 @@ const AdminLoginPage = () => {
       </ul>
 
       <p className={styles.hint}>
-        Локальный режим: <strong>{ADMIN_EMAIL}</strong>
+        {USE_FIREBASE_AUTH ? (
+          <>
+            Firebase: войдите как <strong>{ADMIN_EMAIL}</strong> (пользователь
+            должен быть создан в Firebase Authentication)
+          </>
+        ) : (
+          <>
+            Локальный режим: <strong>{ADMIN_EMAIL}</strong>
+          </>
+        )}
       </p>
 
       <NavLink to="/main" className={styles.backLink}>

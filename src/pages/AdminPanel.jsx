@@ -4,6 +4,7 @@ import AdminPostsSection from "../components/Admin/AdminPostsSection";
 import AdminEventsSection from "../components/Admin/AdminEventsSection";
 import AdminUsersSection from "../components/Admin/AdminUsersSection";
 import { useAuthStore } from "../store/authStore";
+import { logoutSession } from "../services/authSession";
 import { useTheme } from "../store/useTheme";
 import styles from "../scss/components/Admin/adminPanel.module.scss";
 
@@ -29,11 +30,10 @@ const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState("posts");
   const { theme } = useTheme();
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logoutSession();
     navigate("/admin/login");
   };
 
