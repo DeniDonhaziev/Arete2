@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "../store/useTheme";
 import { completeAuth } from "../store/authStore";
 import { registerUser } from "../services/authService";
-import { redirectToMain } from "../utils/authStorage";
 import { validateRegistrationForm } from "../utils/validation";
 import AuthModeNotice from "../components/AuthModeNotice";
 import styles from "../scss/pages/registerPage.module.scss";
 
 const RegisterPage = ({ isLanding = false }) => {
   const { theme } = useTheme();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -49,7 +49,7 @@ const RegisterPage = ({ isLanding = false }) => {
       });
 
       completeAuth(token, user);
-      redirectToMain();
+      navigate("/main", { replace: true });
     } catch (err) {
       setError(err.message || "Ошибка регистрации");
       setIsLoading(false);

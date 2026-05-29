@@ -10,6 +10,7 @@ import { getFirebaseAuth, initFirebaseAnalytics } from "../lib/firebase";
 import { completeAuth, useAuthStore } from "../store/authStore";
 import { isAdmin } from "../utils/roles";
 import {
+  createFirestoreUserProfile,
   ensureFirestoreUserProfile,
   getFirestoreUserProfile,
   isFirestoreOfflineError,
@@ -122,20 +123,24 @@ export const firebaseRegister = async ({
     );
 
     const displayName = [firstName, lastName].filter(Boolean).join(" ").trim();
-    if (displayName) {
-      await updateProfile(credential.user, { displayName });
-    }
 
-    const profile = await ensureFirestoreUserProfile({
-      uid: credential.user.uid,
-      email: credential.user.email,
-      firstName,
-      lastName,
-    });
+    const [, profile] = await Promise.all([
+      displayName
+        ? updateProfile(credential.user, { displayName })
+        : Promise.resolve(),
+      createFirestoreUserProfile({
+        uid: credential.user.uid,
+        email: credential.user.email,
+        firstName,
+        lastName,
+      }),
+    ]);
 
     const user = buildAppUser(credential.user, profile);
     const token = await credential.user.getIdToken();
-    await syncProfileToClubServer(user, { required: true });
+
+    // Синхронизация с Render API — в фоне, не блокирует переход на /main
+    void syncProfileToClubServer(user);
 
     return { token, user };
   } catch (err) {
@@ -168,7 +173,7 @@ export const firebaseLogin = async ({ email, password }) => {
 
     const user = buildAppUser(credential.user, profile);
     const token = await credential.user.getIdToken();
-    await syncProfileToClubServer(user);
+    void syncProfileToClubServer(user);
 
     return { token, user };
   } catch (err) {

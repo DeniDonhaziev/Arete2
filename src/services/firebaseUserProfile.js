@@ -2,7 +2,6 @@ import {
   doc,
   enableNetwork,
   getDoc,
-  getDocFromServer,
   setDoc,
   serverTimestamp,
 } from "firebase/firestore";
@@ -28,22 +27,41 @@ export const isFirestoreOfflineError = (err) => {
 const readProfileSnapshot = async (ref) => {
   const db = getFirebaseDb();
 
-  const tryRead = async (readFn) => {
-    try {
-      return await readFn(ref);
-    } catch (err) {
-      if (!isFirestoreOfflineError(err)) throw err;
-      await enableNetwork(db);
-      return readFn(ref);
-    }
-  };
-
   try {
-    return await tryRead(getDocFromServer);
+    return await getDoc(ref);
   } catch (err) {
     if (!isFirestoreOfflineError(err)) throw err;
-    return tryRead(getDoc);
+    await enableNetwork(db);
+    return getDoc(ref);
   }
+};
+
+/** Быстрое создание профиля при регистрации — без лишних чтений из Firestore */
+export const createFirestoreUserProfile = async ({
+  uid,
+  email,
+  firstName = "",
+  lastName = "",
+}) => {
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const roles = isAdminEmail(normalizedEmail)
+    ? defaultAdminRoles()
+    : defaultMemberRoles();
+
+  const record = {
+    email: normalizedEmail,
+    firstName: String(firstName).trim(),
+    lastName: String(lastName).trim(),
+    roles,
+    createdAt: new Date().toISOString(),
+    updatedAt: serverTimestamp(),
+  };
+
+  await setDoc(doc(getFirebaseDb(), USERS_COLLECTION, uid), record, {
+    merge: true,
+  });
+
+  return { id: uid, ...record, updatedAt: undefined };
 };
 
 export const getFirestoreUserProfile = async (uid) => {
@@ -88,13 +106,7 @@ export const ensureFirestoreUserProfile = async ({
     merge: true,
   });
 
-  try {
-    const saved = await getFirestoreUserProfile(uid);
-    return saved || { id: uid, ...record, updatedAt: undefined };
-  } catch (err) {
-    if (!isFirestoreOfflineError(err)) throw err;
-    return { id: uid, ...record, updatedAt: undefined };
-  }
+  return { id: uid, ...record, updatedAt: undefined };
 };
 
 export const updateFirestoreUserProfile = async (uid, patch) => {

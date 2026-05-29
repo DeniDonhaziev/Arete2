@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "../store/useTheme";
 import { completeAuth } from "../store/authStore";
 import { loginUser } from "../services/authService";
-import { redirectToMain } from "../utils/authStorage";
 import { validateLoginForm } from "../utils/validation";
 import AuthModeNotice from "../components/AuthModeNotice";
 import styles from "../scss/pages/loginPage.module.scss";
@@ -11,6 +10,7 @@ import styles from "../scss/pages/loginPage.module.scss";
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +39,7 @@ const LoginPage = () => {
       });
 
       completeAuth(token, user);
-      redirectToMain();
+      navigate("/main", { replace: true });
     } catch (err) {
       setError(err.message || "Ошибка входа");
       setIsLoading(false);
