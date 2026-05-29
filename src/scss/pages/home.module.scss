@@ -195,6 +195,11 @@
   box-shadow: var(--shadow-glow);
 }
 
+.brandHero {
+  margin: 0 0 20px;
+  animation: fadeUp 0.9s var(--ease-out) 0.05s both;
+}
+
 .titleStyls {
   font-family: var(--font-serif);
   font-weight: 500;

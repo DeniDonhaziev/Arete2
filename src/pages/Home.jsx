@@ -8,6 +8,8 @@ import { useAuthStore } from "../store/authStore";
 import { readPersistedSession } from "../utils/authStorage";
 import { getRoleLabel, sortRolesByPriority } from "../utils/roles";
 
+import BrandTitle from "../components/BrandTitle";
+
 function Home() {
   const navigate = useNavigate();
   const storeUser = useAuthStore((state) => state.user);
@@ -36,7 +38,7 @@ function Home() {
           aria-label="Ваш профиль"
         >
           <p className={styles.profileWelcomeBadge}>
-            Добро пожаловать в Books Club!
+            Добро пожаловать в Arête
           </p>
           <div className={styles.profileWelcomeInner}>
             <div className={styles.profileAvatar}>{initials}</div>
@@ -62,15 +64,12 @@ function Home() {
           <div className={styles.heroOrb} aria-hidden="true" />
           <div className={styles.heroOrbSecondary} aria-hidden="true" />
 
-          <span className={styles.heroBadge}>Arête · Книжный клуб</span>
+          <span className={styles.heroBadge}>Книжный клуб · космос идей</span>
 
-          <h1 className={styles.titleStyls}>
-            Books
-            <span className={styles.titleAccent}> Club</span>
-          </h1>
+          <BrandTitle size="hero" as="h1" className={styles.brandHero} />
 
           <p className={`${styles.subtextTitle} ${styles.tecstUppercase}`}>
-            Космос идей. Вселенная книг.
+            Вселенная книг, искусства и роста
           </p>
 
           <div className={styles.heroActions}>

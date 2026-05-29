@@ -5,6 +5,7 @@ import BurgerMenu from "./BurgerMenu";
 import { useTheme } from "../store/useTheme";
 import { useAuthStore } from "../store/authStore";
 import { logoutSession } from "../services/authSession";
+import BrandTitle from "./BrandTitle";
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, user } = useAuthStore();
@@ -31,16 +32,10 @@ const Header = () => {
         >
           <img
             src={theme === "black" ? "/img/logo.svg" : "/img/logo-bleack.svg"}
-            alt="logo"
+            alt=""
+            aria-hidden="true"
           />
-          <img
-            src={
-              theme === "black"
-                ? "/img/logo-text.svg"
-                : "/img/logo-text-bleack.svg"
-            }
-            alt="logo-text"
-          />
+          <BrandTitle size="header" />
         </NavLink>
 
         {/* BURGER */}

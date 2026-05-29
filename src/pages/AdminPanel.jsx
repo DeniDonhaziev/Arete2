@@ -44,7 +44,7 @@ const AdminPanel = () => {
       <header className={styles.adminTopBar}>
         <div className={styles.adminTopBarInner}>
           <div>
-            <span className={styles.adminTopLabel}>Arete · Админ-панель</span>
+            <span className={styles.adminTopLabel}>Arête · Админ-панель</span>
             <p className={styles.adminTopUser}>
               {user?.firstName} {user?.lastName}
               {user?.email ? ` · ${user.email}` : ""}

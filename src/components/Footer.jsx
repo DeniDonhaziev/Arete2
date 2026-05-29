@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styles from "../scss/components/footer.module.scss";
+import BrandTitle from "./BrandTitle";
 import { useTheme } from "../store/useTheme";
 import { useAuthStore } from "../store/authStore";
 
@@ -19,14 +20,11 @@ const Footer = () => {
         <div className={styles.brand}>
           <img
             src={isDark ? "/img/logo.svg" : "/img/logo-bleack.svg"}
-            alt="Arete"
+            alt=""
+            aria-hidden="true"
             className={styles.logoIcon}
           />
-          <img
-            src={isDark ? "/img/logo-text.svg" : "/img/logo-text-bleack.svg"}
-            alt="Arete Books Club"
-            className={styles.logoText}
-          />
+          <BrandTitle size="footer" />
           <p className={styles.tagline}>
             Космос идей · путь к своей Arête
           </p>
@@ -43,7 +41,7 @@ const Footer = () => {
         </nav>
 
         <p className={styles.copyright}>
-          © {new Date().getFullYear()} Arete Books Club
+          © {new Date().getFullYear()} Arête
         </p>
       </div>
     </footer>

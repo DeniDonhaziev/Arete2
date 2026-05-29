@@ -5,6 +5,7 @@ import { completeAuth } from "../store/authStore";
 import { registerUser } from "../services/authService";
 import { validateRegistrationForm } from "../utils/validation";
 import AuthModeNotice from "../components/AuthModeNotice";
+import BrandTitle from "../components/BrandTitle";
 import styles from "../scss/pages/registerPage.module.scss";
 
 const RegisterPage = ({ isLanding = false }) => {
@@ -78,20 +79,14 @@ const RegisterPage = ({ isLanding = false }) => {
       )}
 
       <div className={styles.logo}>
-        {isLanding ? (
-          <img
-            src={theme === "black" ? "/img/logo.svg" : "/img/logo-bleack.svg"}
-            alt="Arete"
-          />
-        ) : (
-          <NavLink to="/">
-            <img
-              src={theme === "black" ? "/img/logo.svg" : "/img/logo-bleack.svg"}
-              alt="Arete"
-            />
-          </NavLink>
-        )}
-        <h1 className={styles.logoText}>Arête</h1>
+        <img
+          src={theme === "black" ? "/img/logo.svg" : "/img/logo-bleack.svg"}
+          alt=""
+          aria-hidden="true"
+        />
+        <h1 className={styles.logoText}>
+          <BrandTitle size="display" as="span" />
+        </h1>
         {isLanding && (
           <p className={styles.landingSubtitle}>
             Книжный клуб · создайте аккаунт, чтобы начать

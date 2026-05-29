@@ -16,18 +16,19 @@ header {
   .headerIcon {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     text-decoration: none;
     transition: transform var(--transition), opacity var(--transition);
 
     &:hover {
       transform: scale(1.02);
-      opacity: 0.9;
+      opacity: 0.92;
     }
 
     img {
-      height: 34px;
+      height: 36px;
       width: auto;
+      flex-shrink: 0;
     }
   }
 

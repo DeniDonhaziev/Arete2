@@ -5,6 +5,7 @@ import { completeAuth } from "../store/authStore";
 import { loginUser } from "../services/authService";
 import { validateLoginForm } from "../utils/validation";
 import AuthModeNotice from "../components/AuthModeNotice";
+import BrandTitle from "../components/BrandTitle";
 import styles from "../scss/pages/loginPage.module.scss";
 
 const LoginPage = () => {
@@ -55,21 +56,14 @@ const LoginPage = () => {
       }
     >
       <div className={styles.logo}>
-        <NavLink to="/">
+        <NavLink to="/" className={styles.logoLink}>
           <img
             src={theme === "black" ? "/img/logo.svg" : "/img/logo-bleack.svg"}
-            alt="logo"
-            className={styles.logo}
+            alt=""
+            aria-hidden="true"
+            className={styles.logoMark}
           />
-          <img
-            src={
-              theme === "black"
-                ? "/img/logo-text.svg"
-                : "/img/logo-text-bleack.svg"
-            }
-            alt="logo-text"
-            className={styles.logoText}
-          />
+          <BrandTitle size="display" as="span" className={styles.logoWordmark} />
         </NavLink>
       </div>
 

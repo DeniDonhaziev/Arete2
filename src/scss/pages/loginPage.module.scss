@@ -22,8 +22,12 @@
     }
 
     .submitButton {
-      background: var(--text-primary) !important;
-      color: var(--bg-base) !important;
+      background: linear-gradient(
+        145deg,
+        var(--accent-bright) 0%,
+        var(--accent) 100%
+      ) !important;
+      color: #0a0c10 !important;
 
       &:hover {
         opacity: 0.9;
@@ -62,18 +66,23 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 48px;
+  }
 
-    .logo {
-      width: 160px;
-      height: auto;
-      margin-bottom: 0;
-    }
+  .logoLink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
 
-    .logoText {
-      margin: 12px 0 0;
-      width: auto;
-      height: auto;
-    }
+  .logoMark {
+    width: 72px;
+    height: auto;
+  }
+
+  .logoWordmark {
+    margin-top: 4px;
   }
 
   .form {
@@ -127,8 +136,12 @@
     }
 
     .submitButton {
-      background: var(--text-primary);
-      color: var(--bg-base);
+      background: linear-gradient(
+        145deg,
+        var(--accent-bright) 0%,
+        var(--accent) 100%
+      );
+      color: #0a0c10;
       font-weight: 600;
       font-size: 16px;
       letter-spacing: 0.04em;

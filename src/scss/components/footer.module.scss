@@ -52,15 +52,10 @@
 }
 
 .logoIcon {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   opacity: 0.95;
-}
-
-.logoText {
-  max-width: min(240px, 55vw);
-  height: auto;
-  opacity: 0.9;
+  filter: drop-shadow(0 0 16px var(--accent-glow));
 }
 
 .tagline {
