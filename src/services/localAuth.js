@@ -29,14 +29,16 @@ export const loginLocal = async ({ email, password }) => {
   const record = findLocalUserByEmail(email);
 
   if (!record?.passwordHash) {
-    const error = new Error("Неверный email или пароль");
+    const error = new Error(
+      "Аккаунт не найден в этом браузере. Зарегистрируйтесь заново или включите Firebase на Render (VITE_FIREBASE_* и пересборка)."
+    );
     error.status = 401;
     throw error;
   }
 
   const valid = await verifyPassword(password, record.passwordHash);
   if (!valid) {
-    const error = new Error("Неверный email или пароль");
+    const error = new Error("Неверный пароль");
     error.status = 401;
     throw error;
   }

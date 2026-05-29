@@ -5,6 +5,7 @@ import { completeAuth } from "../store/authStore";
 import { loginUser } from "../services/authService";
 import { redirectToMain } from "../utils/authStorage";
 import { validateLoginForm } from "../utils/validation";
+import { getLoginHint, isFirebaseAuthEnabled } from "../config/authMode";
 import styles from "../scss/pages/loginPage.module.scss";
 
 const LoginPage = () => {
@@ -105,6 +106,10 @@ const LoginPage = () => {
       </form>
 
       {error && <div className={styles.error}>{error}</div>}
+
+      <p className={styles.registerLink} style={{ fontSize: "0.85rem", opacity: 0.85 }}>
+        {isFirebaseAuthEnabled() ? "Firebase" : "Локальный режим"} · {getLoginHint()}
+      </p>
 
       <NavLink to="/registration" className={styles.registerLink}>
         Зарегистрироваться

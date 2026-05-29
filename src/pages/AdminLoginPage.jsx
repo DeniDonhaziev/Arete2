@@ -5,6 +5,7 @@ import { completeAuth } from "../store/authStore";
 import { loginAdmin } from "../services/authService";
 import { ADMIN_EMAIL } from "../config/adminAccount";
 import { USE_FIREBASE_AUTH } from "../config/firebaseEnv";
+import { getLoginHint } from "../config/authMode";
 import { validateLoginForm } from "../utils/validation";
 import styles from "../scss/pages/adminLoginPage.module.scss";
 
@@ -118,14 +119,19 @@ const AdminLoginPage = () => {
       <p className={styles.hint}>
         {USE_FIREBASE_AUTH ? (
           <>
-            Firebase: войдите как <strong>{ADMIN_EMAIL}</strong> (пользователь
-            должен быть создан в Firebase Authentication)
+            Админ-email на сайте: <strong>{ADMIN_EMAIL}</strong> — в Firebase
+            Authentication должен быть <strong>тот же email</strong> и{" "}
+            <strong>тот пароль</strong>, который вы задаёте в консоли (не
+            обязательно admin12345678).
           </>
         ) : (
           <>
             Локальный режим: <strong>{ADMIN_EMAIL}</strong>
           </>
         )}
+      </p>
+      <p className={styles.hint} style={{ marginTop: "0.5rem" }}>
+        {getLoginHint()}
       </p>
 
       <NavLink to="/main" className={styles.backLink}>

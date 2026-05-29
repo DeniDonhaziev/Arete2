@@ -20,22 +20,30 @@ const mapFirebaseAuthError = (err) => {
   const error = new Error(err?.message || "Ошибка Firebase Auth");
   error.code = code;
 
-  if (
-    code === "auth/invalid-credential" ||
-    code === "auth/wrong-password" ||
-    code === "auth/user-not-found"
-  ) {
-    error.message = "Неверный email или пароль";
+  if (code === "auth/user-not-found") {
+    error.message =
+      "Пользователь с таким email не найден. Зарегистрируйтесь на /registration или создайте пользователя в Firebase Console → Authentication.";
     error.status = 401;
+  } else if (
+    code === "auth/invalid-credential" ||
+    code === "auth/wrong-password"
+  ) {
+    error.message =
+      "Неверный пароль или email. Проверьте раскладку и Caps Lock. Для админа — пароль из Firebase Authentication, не из подсказки на сайте.";
+    error.status = 401;
+  } else if (code === "auth/invalid-email") {
+    error.message = "Некорректный email";
+    error.status = 400;
   } else if (code === "auth/email-already-in-use") {
     error.message = "Пользователь с таким email уже зарегистрирован";
     error.status = 409;
   } else if (code === "auth/weak-password") {
     error.message = "Пароль слишком простой (минимум 6 символов)";
     error.status = 400;
-  } else if (code === "auth/invalid-email") {
-    error.message = "Некорректный email";
-    error.status = 400;
+  } else if (code === "auth/operation-not-allowed") {
+    error.message =
+      "Вход по email отключён. В Firebase: Authentication → Sign-in method → включите Email/Password.";
+    error.status = 403;
   } else if (code === "auth/too-many-requests") {
     error.message = "Слишком много попыток. Попробуйте позже";
     error.status = 429;
