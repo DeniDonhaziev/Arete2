@@ -12,3 +12,26 @@ services:
         value: "22.13.1"
       - key: EVENTS_ADMIN_KEY
         value: arete-events-admin-dev
+      - key: VITE_EVENTS_ADMIN_KEY
+        value: arete-events-admin-dev
+      # Firebase — подставляются при СБОРКЕ (npm run build). После изменения — redeploy!
+      - key: VITE_FIREBASE_API_KEY
+        value: AIzaSyAXDvKI3yVo_Iw8hyvLwEDNhz_a91Pl0XM
+      - key: VITE_FIREBASE_AUTH_DOMAIN
+        value: arete-63f1c.firebaseapp.com
+      - key: VITE_FIREBASE_PROJECT_ID
+        value: arete-63f1c
+      - key: VITE_FIREBASE_STORAGE_BUCKET
+        value: arete-63f1c.firebasestorage.app
+      - key: VITE_FIREBASE_MESSAGING_SENDER_ID
+        value: "1080969481986"
+      - key: VITE_FIREBASE_APP_ID
+        value: 1:1080969481986:web:ec046f34d040ad640cfc1b
+      - key: VITE_FIREBASE_MEASUREMENT_ID
+        value: G-75DM277S2Z
+      - key: VITE_USE_FIREBASE_AUTH
+        value: "true"
+      - key: VITE_USE_MOCK_API
+        value: "false"
+      - key: VITE_ADMIN_EMAIL
+        value: admin@arete.local

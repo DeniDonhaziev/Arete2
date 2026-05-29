@@ -5,6 +5,7 @@ import { completeAuth } from "../store/authStore";
 import { registerUser } from "../services/authService";
 import { redirectToMain } from "../utils/authStorage";
 import { validateRegistrationForm } from "../utils/validation";
+import AuthModeNotice from "../components/AuthModeNotice";
 import styles from "../scss/pages/registerPage.module.scss";
 
 const RegisterPage = ({ isLanding = false }) => {
@@ -163,6 +164,8 @@ const RegisterPage = ({ isLanding = false }) => {
       </form>
 
       {error && <div className={styles.error}>{error}</div>}
+
+      <AuthModeNotice />
 
       <NavLink to="/login" className={styles.loginLink}>
         Уже есть аккаунт? Войти
