@@ -6,6 +6,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { isAdminEmail } from "../config/adminAccount";
+import { ROLE_IDS } from "../constants/roles";
 import { getFirebaseAuth, initFirebaseAnalytics } from "../lib/firebase";
 import { completeAuth, useAuthStore } from "../store/authStore";
 import { isAdmin } from "../utils/roles";
@@ -16,6 +17,29 @@ import {
   isFirestoreOfflineError,
 } from "./firebaseUserProfile";
 import { syncUserRecordToServer } from "./syncUserToServer";
+
+const AUTH_TIMEOUT_MS = 20000;
+
+const withTimeout = (promise, ms, message) => {
+  let timeoutId;
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error(message)), ms);
+    }),
+  ]).finally(() => clearTimeout(timeoutId));
+};
+
+const buildRegistrationProfile = ({ uid, email, firstName, lastName }) => ({
+  id: uid,
+  email: String(email || "").trim().toLowerCase(),
+  firstName: String(firstName || "").trim(),
+  lastName: String(lastName || "").trim(),
+  roles: isAdminEmail(email)
+    ? [{ id: ROLE_IDS.RED, name: "RED" }]
+    : [{ id: 1, name: "GREEN" }],
+  createdAt: new Date().toISOString(),
+});
 
 const mapFirebaseAuthError = (err) => {
   const code = err?.code || "";
@@ -116,30 +140,45 @@ export const firebaseRegister = async ({
   password,
 }) => {
   try {
-    const credential = await createUserWithEmailAndPassword(
-      getFirebaseAuth(),
-      email.trim(),
-      password
+    const credential = await withTimeout(
+      createUserWithEmailAndPassword(
+        getFirebaseAuth(),
+        email.trim(),
+        password
+      ),
+      AUTH_TIMEOUT_MS,
+      "Регистрация заняла слишком долго. Проверьте интернет и попробуйте снова."
     );
 
     const displayName = [firstName, lastName].filter(Boolean).join(" ").trim();
+    if (displayName) {
+      void updateProfile(credential.user, { displayName }).catch(() => {});
+    }
 
-    const [, profile] = await Promise.all([
-      displayName
-        ? updateProfile(credential.user, { displayName })
-        : Promise.resolve(),
-      createFirestoreUserProfile({
-        uid: credential.user.uid,
-        email: credential.user.email,
-        firstName,
-        lastName,
-      }),
-    ]);
+    const profile = buildRegistrationProfile({
+      uid: credential.user.uid,
+      email: credential.user.email,
+      firstName,
+      lastName,
+    });
+
+    const token = await withTimeout(
+      credential.user.getIdToken(),
+      AUTH_TIMEOUT_MS,
+      "Не удалось получить токен входа. Попробуйте войти через /login."
+    );
 
     const user = buildAppUser(credential.user, profile);
-    const token = await credential.user.getIdToken();
 
-    // Синхронизация с Render API — в фоне, не блокирует переход на /main
+    void createFirestoreUserProfile({
+      uid: credential.user.uid,
+      email: credential.user.email,
+      firstName,
+      lastName,
+    }).catch((err) => {
+      console.warn("Firestore profile (background):", err?.message || err);
+    });
+
     void syncProfileToClubServer(user);
 
     return { token, user };
@@ -150,25 +189,45 @@ export const firebaseRegister = async ({
 
 export const firebaseLogin = async ({ email, password }) => {
   try {
-    const credential = await signInWithEmailAndPassword(
-      getFirebaseAuth(),
-      email.trim(),
-      password
+    const credential = await withTimeout(
+      signInWithEmailAndPassword(getFirebaseAuth(), email.trim(), password),
+      AUTH_TIMEOUT_MS,
+      "Вход занял слишком долго. Проверьте интернет и попробуйте снова."
     );
 
-    let profile = await getFirestoreUserProfile(credential.user.uid);
+    let profile = null;
+    try {
+      profile = await withTimeout(
+        getFirestoreUserProfile(credential.user.uid),
+        8000,
+        "Firestore timeout"
+      );
+    } catch (err) {
+      if (!isFirestoreOfflineError(err) && err?.message !== "Firestore timeout") {
+        throw err;
+      }
+    }
+
     if (!profile) {
-      profile = await ensureFirestoreUserProfile({
+      void ensureFirestoreUserProfile({
         uid: credential.user.uid,
         email: credential.user.email,
+      }).catch(() => {});
+
+      profile = buildRegistrationProfile({
+        uid: credential.user.uid,
+        email: credential.user.email,
+        firstName: credential.user.displayName?.split(" ")[0] || "",
+        lastName:
+          credential.user.displayName?.split(" ").slice(1).join(" ") || "",
       });
     } else if (isAdminEmail(credential.user.email)) {
-      profile = await ensureFirestoreUserProfile({
+      void ensureFirestoreUserProfile({
         uid: credential.user.uid,
         email: credential.user.email,
         firstName: profile.firstName,
         lastName: profile.lastName,
-      });
+      }).catch(() => {});
     }
 
     const user = buildAppUser(credential.user, profile);

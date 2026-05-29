@@ -52,6 +52,7 @@ const RegisterPage = ({ isLanding = false }) => {
       navigate("/main", { replace: true });
     } catch (err) {
       setError(err.message || "Ошибка регистрации");
+    } finally {
       setIsLoading(false);
     }
   };
