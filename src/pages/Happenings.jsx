@@ -8,6 +8,7 @@ import { useApi } from "../hooks/useApi";
 import { formatDateRu, formatTimeRu } from "../utils/date";
 import { usePublicEvents } from "../hooks/usePublicEvents";
 import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router-dom";
 import { buildJoinPayloadFromUser } from "../utils/participant";
 
 const Happenings = () => {
