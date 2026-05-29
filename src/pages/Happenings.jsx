@@ -8,7 +8,7 @@ import { useApi } from "../hooks/useApi";
 import { formatDateRu, formatTimeRu } from "../utils/date";
 import { usePublicEvents } from "../hooks/usePublicEvents";
 import { useAuthStore } from "../store/authStore";
-import { useNavigate } from "react-router-dom";
+import { buildJoinPayloadFromUser } from "../utils/participant";
 
 const Happenings = () => {
   const { theme } = useTheme();
@@ -76,9 +76,14 @@ const Happenings = () => {
         let done = false;
         let lastError = null;
 
+        const joinBody = isRegistered ? undefined : buildJoinPayloadFromUser(user);
+
         for (const method of methodsToTry) {
           try {
-            await apiCall(endpoint, { method });
+            await apiCall(endpoint, {
+              method,
+              body: joinBody ? JSON.stringify(joinBody) : undefined,
+            });
             done = true;
             break;
           } catch (err) {

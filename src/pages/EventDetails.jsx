@@ -3,17 +3,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../scss/pages/eventDetails.module.scss";
-import { useTheme } from "../store/useTheme";
 import { useApi } from "../hooks/useApi";
 import { useAuthStore } from "../store/authStore";
 import { formatDateRu, formatTimeRu } from "../utils/date";
 import { subscribeToEventsUpdates } from "../utils/eventsSync";
+import {
+  buildJoinPayloadFromUser,
+  getParticipantDisplayName,
+  getParticipantInitials,
+} from "../utils/participant";
 import { getRoleColor, getRoleLabel, sortRolesByPriority } from "../utils/roles";
 
 const EventDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { theme } = useTheme();
   const { apiCall } = useApi();
   const user = useAuthStore((state) => state.user);
   const token = useAuthStore((state) => state.token);
@@ -47,6 +50,17 @@ const EventDetails = () => {
     return unsubscribe;
   }, [fetchEvent]);
 
+  const eventDateBadge = useMemo(() => {
+    if (!event?.plannedAt) return null;
+    const date = new Date(event.plannedAt);
+    if (Number.isNaN(date.getTime())) return null;
+
+    return {
+      day: date.getDate(),
+      month: date.toLocaleDateString("ru-RU", { month: "short" }).replace(".", ""),
+    };
+  }, [event?.plannedAt]);
+
   const isRegistered = useMemo(() => {
     if (!user?.id || !Array.isArray(event?.participants)) return false;
     const currentUserId = String(user.id);
@@ -71,13 +85,17 @@ const EventDetails = () => {
       setActionLoading(true);
       setError(null);
       const endpoint = `/events/${event.id}/${isRegistered ? "quit" : "join"}`;
+      const joinBody = isRegistered ? undefined : buildJoinPayloadFromUser(user);
       const methodsToTry = ["PATCH", "POST"];
       let done = false;
       let lastError = null;
 
       for (const method of methodsToTry) {
         try {
-          await apiCall(endpoint, { method });
+          await apiCall(endpoint, {
+            method,
+            body: joinBody ? JSON.stringify(joinBody) : undefined,
+          });
           done = true;
           break;
         } catch (err) {
@@ -103,19 +121,23 @@ const EventDetails = () => {
     } finally {
       setActionLoading(false);
     }
-  }, [apiCall, event?.id, fetchEvent, isRegistered, token, user?.id]);
+  }, [apiCall, event?.id, fetchEvent, isRegistered, token, user]);
+
+  const organizerName = [event?.manager?.firstName, event?.manager?.lastName]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <div className={theme === "black" ? styles.page : `${styles.page} ${styles.pageLight}`}>
+    <div className={styles.page}>
       <Header />
 
       <main className={styles.container}>
         <button
           type="button"
-          className={theme === "black" ? styles.backButton : `${styles.backButton} ${styles.backButtonLight}`}
+          className={styles.backButton}
           onClick={() => navigate(-1)}
         >
-          <img src={theme === "black" ? "/img/back.svg" : "/img/backBleack.svg"} alt="back" />
+          <img src="/img/back.svg" alt="" aria-hidden="true" />
           <span>Назад</span>
         </button>
 
@@ -123,52 +145,73 @@ const EventDetails = () => {
         {error && <p className={styles.error}>{error}</p>}
 
         {!loading && event && (
-          <section className={theme === "black" ? styles.card : `${styles.card} ${styles.cardLight}`}>
-            <h1 className={styles.title}>{event.title}</h1>
-
-            <p className={styles.meta}>
-              {formatDateRu(event.plannedAt, undefined, "Дата не указана")} в{" "}
-              {formatTimeRu(
-                event.plannedAt,
-                { hour: "2-digit", minute: "2-digit" },
-                "—"
+          <section className={styles.card}>
+            <div className={styles.heroTop}>
+              {eventDateBadge && (
+                <div className={styles.dateBadge} aria-hidden="true">
+                  <strong>{eventDateBadge.day}</strong>
+                  <span>{eventDateBadge.month}</span>
+                </div>
               )}
-            </p>
+              <h1 className={styles.title}>{event.title}</h1>
+            </div>
 
-            <p className={styles.description}>{event.description}</p>
+            <div className={styles.metaRow}>
+              <span className={styles.metaChip}>
+                {formatDateRu(event.plannedAt, undefined, "Дата не указана")}
+              </span>
+              <span className={styles.metaChip}>
+                {formatTimeRu(
+                  event.plannedAt,
+                  { hour: "2-digit", minute: "2-digit" },
+                  "—"
+                )}
+              </span>
+            </div>
 
-            <p className={styles.manager}>
-              Организатор: {event.manager?.firstName} {event.manager?.lastName}
-            </p>
-            {!!event.manager?.roles?.length && (
-              <div className={styles.rolesRow}>
-                {sortRolesByPriority(event.manager.roles).map((role) => {
-                  const roleColor = getRoleColor(role);
-                  return (
-                    <span
-                      key={role.id}
-                      className={styles.roleBadge}
-                      style={
-                        roleColor
-                          ? {
-                              backgroundColor: roleColor.background,
-                              borderColor: roleColor.border,
-                              color: roleColor.text,
-                            }
-                          : undefined
-                      }
-                    >
-                      {getRoleLabel(role)}
-                    </span>
-                  );
-                })}
+            {event.description && (
+              <p className={styles.description}>{event.description}</p>
+            )}
+
+            {organizerName && (
+              <div className={styles.organizerBlock}>
+                <span className={styles.organizerLabel}>Организатор</span>
+                <p className={styles.organizerName}>{organizerName}</p>
+                {!!event.manager?.roles?.length && (
+                  <div className={styles.rolesRow}>
+                    {sortRolesByPriority(event.manager.roles).map((role) => {
+                      const roleColor = getRoleColor(role);
+                      return (
+                        <span
+                          key={role.id}
+                          className={styles.roleBadge}
+                          style={
+                            roleColor
+                              ? {
+                                  backgroundColor: roleColor.background,
+                                  borderColor: roleColor.border,
+                                  color: roleColor.text,
+                                }
+                              : undefined
+                          }
+                        >
+                          {getRoleLabel(role)}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
 
             {user?.id && token && (
               <button
                 type="button"
-                className={isRegistered ? `${styles.actionButton} ${styles.cancelButton}` : styles.actionButton}
+                className={
+                  isRegistered
+                    ? `${styles.actionButton} ${styles.cancelButton}`
+                    : styles.actionButton
+                }
                 onClick={handleToggleRegistration}
                 disabled={actionLoading}
               >
@@ -180,47 +223,43 @@ const EventDetails = () => {
               </button>
             )}
 
-            <h2 className={styles.participantsTitle}>
-              Участники ({event.participants?.length || 0})
-            </h2>
+            <div className={styles.participantsSection}>
+              <h2 className={styles.participantsTitle}>
+                Участники{" "}
+                <span className={styles.participantsCount}>
+                  ({event.participants?.length || 0})
+                </span>
+              </h2>
 
-            <ul className={styles.participantsList}>
-              {(event.participants || []).map((participant) => (
-                <li key={participant.id} className={styles.participantItem}>
-                  <span className={styles.participantName}>
-                    {participant.firstName} {participant.lastName}
-                  </span>
-                  <span className={styles.participantEmail}>{participant.email}</span>
-                  {!!participant.roles?.length && (
-                    <div className={styles.rolesRow}>
-                      {sortRolesByPriority(participant.roles).map((role) => {
-                        const roleColor = getRoleColor(role);
-                        return (
-                          <span
-                            key={role.id}
-                            className={styles.roleBadge}
-                            style={
-                              roleColor
-                                ? {
-                                    backgroundColor: roleColor.background,
-                                    borderColor: roleColor.border,
-                                    color: roleColor.text,
-                                  }
-                                : undefined
-                            }
-                          >
-                            {getRoleLabel(role)}
+              <ul className={styles.participantsGrid}>
+                {(event.participants || []).map((participant) => {
+                  const participantKey = String(participant.id);
+                  const displayName = getParticipantDisplayName(participant);
+
+                  return (
+                    <li key={participantKey} className={styles.participantChip}>
+                      <span className={styles.participantAvatar} aria-hidden="true">
+                        {getParticipantInitials(participant)}
+                      </span>
+                      <div className={styles.participantInfo}>
+                        <span className={styles.participantName}>{displayName}</span>
+                        {participant.email && (
+                          <span className={styles.participantEmail}>
+                            {participant.email}
                           </span>
-                        );
-                      })}
-                    </div>
-                  )}
-                </li>
-              ))}
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+
               {(!event.participants || event.participants.length === 0) && (
-                <li className={styles.participantEmpty}>Пока никто не зарегистрирован</li>
+                <p className={styles.participantEmpty}>
+                  Пока никто не зарегистрирован — будьте первым
+                </p>
               )}
-            </ul>
+            </div>
           </section>
         )}
       </main>

@@ -4,6 +4,10 @@ import {
   loadEvents,
   saveEvents,
 } from "./eventsStore.js";
+import {
+  buildParticipantOnJoin,
+  enrichEventParticipants,
+} from "./participantUtils.js";
 
 const ADMIN_KEY = process.env.EVENTS_ADMIN_KEY || "arete-events-admin-dev";
 
@@ -78,8 +82,9 @@ export const createEventsRouter = () => {
   router.get(
     "/",
     asyncHandler(async (_req, res) => {
-      const events = sortEvents(await loadEvents()).map(normalizeEvent);
-      res.json(events);
+      const events = sortEvents(await loadEvents());
+      const enriched = await Promise.all(events.map(enrichEventParticipants));
+      res.json(enriched.map(normalizeEvent));
     })
   );
 
@@ -91,7 +96,7 @@ export const createEventsRouter = () => {
       if (!event) {
         return res.status(404).json({ message: "Мероприятие не найдено" });
       }
-      return res.json(normalizeEvent(event));
+      return res.json(normalizeEvent(await enrichEventParticipants(event)));
     })
   );
 
@@ -163,7 +168,8 @@ export const createEventsRouter = () => {
 
       if (action === "join") {
         if (!event.participants.some((p) => String(p.id ?? p) === String(uid))) {
-          event.participants.push({ id: uid });
+          const participant = await buildParticipantOnJoin(uid, req.body || {});
+          event.participants.push(participant);
         }
       } else {
         event.participants = event.participants.filter(
