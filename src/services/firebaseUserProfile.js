@@ -43,7 +43,8 @@ export const ensureFirestoreUserProfile = async ({
     merge: true,
   });
 
-  return { id: uid, ...record };
+  const saved = await getFirestoreUserProfile(uid);
+  return saved || { id: uid, ...record, updatedAt: undefined };
 };
 
 export const updateFirestoreUserProfile = async (uid, patch) => {

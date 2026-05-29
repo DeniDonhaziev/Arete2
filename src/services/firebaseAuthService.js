@@ -39,6 +39,10 @@ const mapFirebaseAuthError = (err) => {
   } else if (code === "auth/too-many-requests") {
     error.message = "Слишком много попыток. Попробуйте позже";
     error.status = 429;
+  } else if (code === "permission-denied") {
+    error.message =
+      "Нет доступа к Firestore. Проверьте правила базы в Firebase Console.";
+    error.status = 403;
   }
 
   return error;
@@ -61,16 +65,19 @@ export const getFirebaseIdToken = async (forceRefresh = false) => {
   return user.getIdToken(forceRefresh);
 };
 
-const syncProfileToClubServer = async (user) => {
-  await syncUserRecordToServer({
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    passwordHash: "",
-    roles: user.roles,
-    createdAt: user.createdAt,
-  });
+const syncProfileToClubServer = async (user, { required = false } = {}) => {
+  await syncUserRecordToServer(
+    {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      passwordHash: "",
+      roles: user.roles,
+      createdAt: user.createdAt,
+    },
+    { throwOnError: required }
+  );
 };
 
 export const firebaseRegister = async ({
@@ -100,7 +107,7 @@ export const firebaseRegister = async ({
 
     const user = buildAppUser(credential.user, profile);
     const token = await credential.user.getIdToken();
-    await syncProfileToClubServer(user);
+    await syncProfileToClubServer(user, { required: true });
 
     return { token, user };
   } catch (err) {

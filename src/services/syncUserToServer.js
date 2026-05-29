@@ -1,25 +1,36 @@
 import apiCall from "../API/apiClient";
 import { findLocalUserByEmail, readAllRecords } from "./localUsersStorage";
 
-/** Сохраняет пользователя в общую базу (видно в админке из любого браузера) */
-export const syncUserRecordToServer = async (record) => {
-  if (!record?.email) return;
+/** Сохраняет пользователя в общую базу (видно в админке и на /rating) */
+export const syncUserRecordToServer = async (record, { throwOnError = false } = {}) => {
+  if (!record?.email) return null;
 
   try {
-    await apiCall("/users/sync", {
+    return await apiCall("/users/sync", {
       method: "POST",
       body: JSON.stringify({
         id: record.id,
         firstName: record.firstName,
         lastName: record.lastName,
         email: record.email,
-        passwordHash: record.passwordHash,
+        passwordHash: record.passwordHash || "",
         roles: record.roles,
-        createdAt: record.createdAt,
+        createdAt: record.createdAt || new Date().toISOString(),
       }),
     });
   } catch (err) {
-    console.warn("Не удалось синхронизировать пользователя с сервером:", err.message);
+    const message =
+      err.message ||
+      "Не удалось сохранить профиль на сервере клуба (админка и рейтинг).";
+
+    if (throwOnError) {
+      const error = new Error(message);
+      error.cause = err;
+      throw error;
+    }
+
+    console.warn("Не удалось синхронизировать пользователя с сервером:", message);
+    return null;
   }
 };
 
