@@ -19,6 +19,7 @@ import { startFirebaseAuthListener } from "./services/firebaseAuthService";
 import { logoutSession } from "./services/authSession";
 import { useTheme } from "./store/useTheme";
 import NotFoundPage from "./pages/NotFoundPage";
+import BottomNav from "./components/BottomNav";
 import {
   restoreSessionFromStorage,
   sanitizeAuthStorage,
@@ -85,6 +86,7 @@ function App() {
         <Route path="/admin" element={<AdminRoute />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <BottomNav />
     </div>
   );
 }

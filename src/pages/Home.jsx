@@ -1,17 +1,14 @@
 import styles from "../scss/pages/home.module.scss";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import HomeHero from "../components/HomeHero";
 import SlayderSessions from "../components/SlayderSessions";
 import PoemCard from "../components/PoemCard";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { readPersistedSession } from "../utils/authStorage";
 import { getRoleLabel, sortRolesByPriority } from "../utils/roles";
 
-import BrandTitle from "../components/BrandTitle";
-
 function Home() {
-  const navigate = useNavigate();
   const storeUser = useAuthStore((state) => state.user);
   const user = storeUser ?? readPersistedSession()?.user;
 
@@ -33,77 +30,13 @@ function Home() {
     <>
       <Header />
       <main className={styles.main}>
-        <section
-          className={`${styles.profileWelcome} ${styles.profileWelcomeNew}`}
-          aria-label="Ваш профиль"
-        >
-          <p className={styles.profileWelcomeBadge}>
-            Добро пожаловать в Arête
-          </p>
-          <div className={styles.profileWelcomeInner}>
-            <div className={styles.profileAvatar}>{initials}</div>
-            <div className={styles.profileDetails}>
-              <span className={styles.profileLabel}>Мой профиль</span>
-              <h2 className={styles.profileName}>{displayName || "Пользователь"}</h2>
-              {user.email && <p className={styles.profileEmail}>{user.email}</p>}
-              {topRole && (
-                <span className={styles.profileRole}>{getRoleLabel(topRole)}</span>
-              )}
-            </div>
-            <button
-              type="button"
-              className={styles.profileEditBtn}
-              onClick={() => navigate("/settings")}
-            >
-              Настройки
-            </button>
-          </div>
-        </section>
-
-        <section className={styles.hero}>
-          <div className={styles.heroOrb} aria-hidden="true" />
-          <div className={styles.heroOrbSecondary} aria-hidden="true" />
-
-          <span className={styles.heroBadge}>Книжный клуб · космос идей</span>
-
-          <BrandTitle size="hero" as="h1" className={styles.brandHero} />
-
-          <p className={`${styles.subtextTitle} ${styles.tecstUppercase}`}>
-            Вселенная книг, искусства и роста
-          </p>
-
-          <div className={styles.heroActions}>
-            <button
-              type="button"
-              className={`${styles.tecstUppercase} ${styles.buttonPrimary}`}
-              onClick={() => navigate("/settings")}
-            >
-              Мой профиль
-            </button>
-            <button
-              type="button"
-              className={`${styles.tecstUppercase} ${styles.buttonGhost}`}
-              onClick={() => navigate("/happenings")}
-            >
-              Мероприятия
-            </button>
-          </div>
-
-          <ul className={styles.heroStats} aria-label="О клубе">
-            <li>
-              <strong>Книги</strong>
-              <span>обсуждения и рецензии</span>
-            </li>
-            <li>
-              <strong>Искусство</strong>
-              <span>кино, дизайн, поэзия</span>
-            </li>
-            <li>
-              <strong>Сообщество</strong>
-              <span>рост и вдохновение</span>
-            </li>
-          </ul>
-        </section>
+        <HomeHero
+          user={user}
+          displayName={displayName}
+          initials={initials}
+          topRole={topRole}
+          roleLabel={topRole ? getRoleLabel(topRole) : ""}
+        />
 
         <section className={styles.aboutPanel}>
           <span className={styles.sectionLabel}>О нас</span>
@@ -112,18 +45,7 @@ function Home() {
             <p className={styles.textRegulirovca}>
               Arête — это постоянное стремление к совершенству и полной
               реализации своего потенциала. Мы начали с книг, ведь именно они
-              зажигают в нас первые звёзды любознательности. Но наш путь не
-              заканчивается на этом — он только начинается.
-            </p>
-            <p className={styles.textRegulirovca}>
-              Наш клуб — это созвездие искателей. Мы — навигаторы в
-              безграничном космосе искусства, дизайна, кино, литературы и
-              многого другого.
-            </p>
-            <p className={styles.textRegulirovca}>
-              Здесь мы помогаем друг другу прокладывать путь к своим звёздам,
-              делимся взглядами для расширения кругозора и вдохновением для
-              души.
+              зажигают в нас первые звёзды любознательности.
             </p>
             <p className={`${styles.textRegulirovca} ${styles.textHighlight}`}>
               Мы оставляем границы позади, чтобы достичь своей Arête.

@@ -6,6 +6,15 @@ import { useTheme } from "../store/useTheme";
 import { useAuthStore } from "../store/authStore";
 import { logoutSession } from "../services/authSession";
 import BrandTitle from "./BrandTitle";
+
+const NAV_ITEMS = [
+  { to: "/main", label: "Главная", icon: "⌂", end: true, guestTo: "/" },
+  { to: "/happenings", label: "Мероприятия", icon: "◈" },
+  { to: "/newspaper", label: "Газета", icon: "✦" },
+  { to: "/rating", label: "Рейтинг", icon: "★" },
+  { to: "/settings", label: "Настройки", icon: "○", authOnly: true },
+];
+
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, user } = useAuthStore();
@@ -20,12 +29,16 @@ const Header = () => {
     navigate("/login");
   };
 
+  const menuClass =
+    theme === "black"
+      ? styles.desktopMenu
+      : `${styles.desktopMenu} ${styles.desktopMenuColor}`;
+
   return (
     <>
       {menuOpen && <BurgerMenu closeMenu={closeMenu} />}
 
       <header className={styles.header}>
-        {/* LOGO */}
         <NavLink
           to={isAuthenticated ? "/main" : "/"}
           className={styles.headerIcon}
@@ -38,7 +51,6 @@ const Header = () => {
           <BrandTitle size="header" />
         </NavLink>
 
-        {/* BURGER */}
         <img
           className={styles.burgerMenu}
           src={
@@ -50,44 +62,34 @@ const Header = () => {
           onClick={openMenu}
         />
 
-        {/* NAVIGATION (ТОЛЬКО ССЫЛКИ) */}
-        <nav
-          className={
-            theme === "black"
-              ? styles.desktopMenu
-              : `${styles.desktopMenu} ${styles.desktopMenuColor}`
-          }
-        >
-          <NavLink
-            to={isAuthenticated ? "/main" : "/"}
-            className={({ isActive }) => (isActive ? styles.active : "")}
-          >
-            ГЛАВНАЯ
-          </NavLink>
+        <nav className={menuClass} aria-label="Основная навигация">
+          {NAV_ITEMS.map(({ to, label, icon, end, authOnly, guestTo }) => {
+            if (authOnly && !isAuthenticated) return null;
 
-          <NavLink to="/happenings" className={({ isActive }) => (isActive ? styles.active : "")}>
-            МЕРОПРИЯТИЯ
-          </NavLink>
+            const linkTo =
+              !isAuthenticated && guestTo ? guestTo : to;
 
-          <NavLink to="/newspaper" className={({ isActive }) => (isActive ? styles.active : "")}>
-            ГАЗЕТА
-          </NavLink>
-
-          <NavLink to="/rating" className={({ isActive }) => (isActive ? styles.active : "")}>
-            РЕЙТИНГ
-          </NavLink>
-
-          {isAuthenticated && (
-            <NavLink to="/settings" className={({ isActive }) => (isActive ? styles.active : "")}>
-              НАСТРОЙКИ
-            </NavLink>
-          )}
-
+            return (
+              <NavLink
+                key={to}
+                to={linkTo}
+                end={end && isAuthenticated}
+                className={({ isActive }) =>
+                  [styles.navLink, isActive ? styles.active : ""]
+                    .filter(Boolean)
+                    .join(" ")
+                }
+              >
+                <span className={styles.navIcon} aria-hidden="true">
+                  {icon}
+                </span>
+                <span className={styles.navLabel}>{label}</span>
+              </NavLink>
+            );
+          })}
         </nav>
 
-        {/* ACTIONS (ПРАВАЯ ЧАСТЬ) */}
         <div className={styles.actions}>
-          {/* ТЕМА */}
           <div
             className={
               theme === "black"
@@ -102,17 +104,16 @@ const Header = () => {
             />
           </div>
 
-          {/* AUTH */}
           {isAuthenticated ? (
-  <>
-    <span className={styles.userName}>
-      {[user?.firstName, user?.lastName].filter(Boolean).join(" ") || "Профиль"}
-    </span>
-
-    <span className={styles.logoutLink} onClick={handleLogout}>
-      ВЫЙТИ
-    </span>
-  </>
+            <>
+              <span className={styles.userName}>
+                {[user?.firstName, user?.lastName].filter(Boolean).join(" ") ||
+                  "Профиль"}
+              </span>
+              <span className={styles.logoutLink} onClick={handleLogout}>
+                ВЫЙТИ
+              </span>
+            </>
           ) : (
             <Link
               to="/login"
