@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { getFirebaseConfig, isFirebaseConfigured } from "../config/firebaseEnv";
 
@@ -31,7 +31,15 @@ export const getFirebaseAuth = () => {
 
 export const getFirebaseDb = () => {
   if (!db) {
-    db = getFirestore(getFirebaseApp());
+    const app = getFirebaseApp();
+    try {
+      // Помогает, если обычное WebChannel блокируется (прокси, VPN, Render)
+      db = initializeFirestore(app, {
+        experimentalForceLongPolling: true,
+      });
+    } catch {
+      db = getFirestore(app);
+    }
   }
   return db;
 };

@@ -12,6 +12,7 @@ import { isAdmin } from "../utils/roles";
 import {
   ensureFirestoreUserProfile,
   getFirestoreUserProfile,
+  isFirestoreOfflineError,
 } from "./firebaseUserProfile";
 import { syncUserRecordToServer } from "./syncUserToServer";
 
@@ -51,9 +52,28 @@ const mapFirebaseAuthError = (err) => {
     error.message =
       "Нет доступа к Firestore. Проверьте правила базы в Firebase Console.";
     error.status = 403;
+  } else if (
+    String(err?.message || "")
+      .toLowerCase()
+      .includes("offline")
+  ) {
+    error.message =
+      "Нет связи с Firestore. Проверьте интернет, отключите блокировщик рекламы для сайта и убедитесь, что Firestore Database создана в Firebase Console.";
+    error.status = 503;
   }
 
   return error;
+};
+
+const mapProfileError = (err) => {
+  if (isFirestoreOfflineError(err)) {
+    const error = new Error(
+      "Нет связи с Firestore. Проверьте интернет и что в Firebase включена Firestore Database."
+    );
+    error.status = 503;
+    return error;
+  }
+  return mapFirebaseAuthError(err);
 };
 
 export const buildAppUser = (firebaseUser, profile) => ({
@@ -119,7 +139,7 @@ export const firebaseRegister = async ({
 
     return { token, user };
   } catch (err) {
-    throw mapFirebaseAuthError(err);
+    throw mapProfileError(err);
   }
 };
 
@@ -152,7 +172,7 @@ export const firebaseLogin = async ({ email, password }) => {
 
     return { token, user };
   } catch (err) {
-    throw mapFirebaseAuthError(err);
+    throw mapProfileError(err);
   }
 };
 
