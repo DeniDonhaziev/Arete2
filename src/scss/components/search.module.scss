@@ -16,7 +16,8 @@
 }
 
 .search {
-  width: min(880px, calc(100vw - 32px));
+  width: 100%;
+  max-width: var(--content-max);
   margin: 0 auto 32px;
   display: flex;
   align-items: center;

@@ -1,6 +1,9 @@
 .container {
   min-height: 100vh;
-  width: min(var(--content-max), calc(100vw - 32px));
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
   margin: 0 auto;
   padding: 20px 0 48px;
   color: var(--text-primary);

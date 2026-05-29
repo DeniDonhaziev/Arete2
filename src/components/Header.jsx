@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import styles from "../scss/components/header.module.scss";
-import BurgerMenu from "./BurgerMenu";
 import { useTheme } from "../store/useTheme";
 import { useAuthStore } from "../store/authStore";
 import { logoutSession } from "../services/authSession";
@@ -20,10 +18,6 @@ const Header = () => {
   const { isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const openMenu = () => setMenuOpen(true);
-  const closeMenu = () => setMenuOpen(false);
-
   const handleLogout = async () => {
     await logoutSession();
     navigate("/login");
@@ -35,10 +29,8 @@ const Header = () => {
       : `${styles.desktopMenu} ${styles.desktopMenuColor}`;
 
   return (
-    <>
-      {menuOpen && <BurgerMenu closeMenu={closeMenu} />}
-
-      <header className={styles.header}>
+    <header className={styles.header}>
+      <div className={styles.headerInner}>
         <NavLink
           to={isAuthenticated ? "/main" : "/"}
           className={styles.headerIcon}
@@ -51,23 +43,11 @@ const Header = () => {
           <BrandTitle size="header" />
         </NavLink>
 
-        <img
-          className={styles.burgerMenu}
-          src={
-            theme === "black"
-              ? "/img/burger-menu.svg"
-              : "/img/burger-menu-bleack.jpg"
-          }
-          alt="menu"
-          onClick={openMenu}
-        />
-
         <nav className={menuClass} aria-label="Основная навигация">
           {NAV_ITEMS.map(({ to, label, icon, end, authOnly, guestTo }) => {
             if (authOnly && !isAuthenticated) return null;
 
-            const linkTo =
-              !isAuthenticated && guestTo ? guestTo : to;
+            const linkTo = !isAuthenticated && guestTo ? guestTo : to;
 
             return (
               <NavLink
@@ -127,8 +107,8 @@ const Header = () => {
             </Link>
           )}
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 };
 

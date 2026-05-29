@@ -31,8 +31,9 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --transition: 0.28s var(--ease-out);
   --header-blur: 20px;
-  --content-max: 1040px;
-  --section-gap: clamp(56px, 9vw, 96px);
+  --page-gutter: clamp(16px, 2vw, 40px);
+  --content-max: calc(100vw - 2 * var(--page-gutter));
+  --section-gap: clamp(40px, 5vw, 72px);
 
   position: relative;
   margin: 0;
@@ -114,6 +115,15 @@
   &::after {
     opacity: 0.2;
   }
+}
+
+/* Shared page width — full PC width with side gutters */
+.pageContainer {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+  box-sizing: border-box;
 }
 
 @keyframes fadeUp {

@@ -116,7 +116,7 @@ const SlayderSessions = function () {
         </nav>
 
         <div
-          style={{ flex: 1, minWidth: 0, cursor: "pointer" }}
+          className={styles.slideContent}
           onClick={openEvent}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {

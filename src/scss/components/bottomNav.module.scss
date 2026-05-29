@@ -2,7 +2,7 @@
   height: 76px;
   flex-shrink: 0;
 
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     display: none;
   }
 }
@@ -23,7 +23,7 @@
   border-top: 1px solid var(--border-subtle);
   box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
 
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     display: none;
   }
 }

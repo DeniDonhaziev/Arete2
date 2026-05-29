@@ -15,8 +15,8 @@
 }
 
 .visualBackdrop {
-  width: min(var(--content-max), calc(100vw - 32px));
-  max-width: min(var(--content-max), calc(100vw - 32px));
+  width: 100%;
+  max-width: var(--content-max);
   margin: 0 auto;
   box-sizing: border-box;
   display: grid;

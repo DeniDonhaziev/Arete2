@@ -6,7 +6,8 @@
 
 .visualBackdrop {
   margin: 0 auto;
-  width: min(var(--content-max), calc(100vw - 32px));
+  width: 100%;
+  max-width: var(--content-max);
   box-sizing: border-box;
   border-radius: var(--radius-xl);
   background: var(--bg-glass);
@@ -56,12 +57,13 @@
   }
 
   .subtextOfTheEvent {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 14px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(12px, 2vw, 20px);
     width: 100%;
     min-width: 0;
+    min-height: 180px;
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     background: linear-gradient(
@@ -69,7 +71,7 @@
       var(--bg-surface) 0%,
       var(--bg-elevated) 100%
     );
-    padding: clamp(16px, 2.5vw, 22px);
+    padding: clamp(20px, 3vw, 28px);
     box-sizing: border-box;
     transition: border-color var(--transition);
 
@@ -112,17 +114,20 @@
     .leftArrow,
     .rightArrow {
       flex: 0 0 auto;
-      align-self: center;
-      min-width: 38px;
-      min-height: 52px;
-      border-radius: var(--radius-md);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
       border: 1px solid var(--border-strong);
       background: var(--bg-glass-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: all var(--transition);
 
       &:hover {
         background: var(--accent-soft);
         border-color: var(--border-accent);
+        transform: scale(1.05);
       }
 
       button {
@@ -130,18 +135,40 @@
         border: none;
         color: var(--text-primary);
         font-size: 22px;
+        line-height: 1;
         cursor: pointer;
         width: 100%;
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 0;
       }
     }
 
     .arrowColor {
       border-color: var(--border-strong) !important;
     }
+  }
+}
+
+.slideContent {
+  min-width: 0;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 clamp(8px, 2vw, 24px);
+
+  article {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  p {
+    margin: 0;
   }
 }
 
@@ -178,7 +205,14 @@
 
 @media (max-width: 767px) {
   .visualBackdrop .subtextOfTheEvent {
-    padding: 14px;
+    padding: 16px 12px;
     gap: 10px;
+    min-height: 160px;
+  }
+
+  .visualBackdrop .subtextOfTheEvent .leftArrow,
+  .visualBackdrop .subtextOfTheEvent .rightArrow {
+    width: 38px;
+    height: 38px;
   }
 }

@@ -4,9 +4,10 @@
 }
 
 .container {
-  width: min(var(--content-max), calc(100vw - 32px));
-  margin: 0 auto;
-  padding: clamp(20px, 4vw, 36px) 0 clamp(40px, 6vw, 64px);
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: clamp(20px, 4vw, 36px) var(--page-gutter) clamp(40px, 6vw, 64px);
   box-sizing: border-box;
 }
 
